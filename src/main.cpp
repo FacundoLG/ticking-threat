@@ -11,12 +11,12 @@
 #define P1 3
 #define P2 2
 #define P3 4
-#define PERIOD 8
-#define TON 3
-#define TOFF 3
 //buzzer
 #define BUZZER 12
 uint8_t pins[] = {LT, BI, LE, D0, D1, D2, D3,P1, P2, P3, BUZZER};
+//Configuration
+#define INITIAL 20 // Initial number to display
+
 
 void writeDigit(uint8_t digit,uint8_t display);
 void displayNumber(uint8_t i, uint16_t number);
@@ -30,28 +30,30 @@ void setup() {
   digitalWrite(BI, HIGH);
 }
 
-uint8_t i = 0,finish = 0;
-uint16_t initialNumber = 20; // Initial number to display
-uint16_t number;
-uint16_t lastNumber = initialNumber;
+uint8_t currDigit = 0,finish = 0;
+uint16_t number = INITIAL;
+uint16_t lastNumber = INITIAL;
 
 unsigned long timebuzzeron = 0;
 void loop() {
    if(!finish){
+    //Countdown happening
     if(millis() - timebuzzeron > 100) { // Turn off buzzer after .1 second
     digitalWrite(BUZZER, LOW);
     }
     
-    number = initialNumber - millis() / 1000;
-
-  
+    number = INITIAL - millis() / 1000;
+    if(number <= 0) {
+      number = 0;
+      finish = 1;
+   }
     if(number < lastNumber){
       lastNumber = number;
       digitalWrite(BUZZER, HIGH); // Turn on buzzer
       timebuzzeron = millis();
     }
-  }
-  else {
+  } else {
+    //When the countdown finishes, it starts ringing
     if(millis() - timebuzzeron > 100){
       digitalWrite(BUZZER, HIGH);
 
@@ -62,27 +64,20 @@ void loop() {
     }
   }
 
-  if(number <= 0) {
-    number = 000;
-    finish = 1;
-  }
-
+  displayNumber(currDigit,number);
  
+  delay(3); 
   
-  displayNumber(i,number);
- 
-  delay(TOFF); 
-  
-  i++;
-  if(i > 2) {
-    i = 0;
+  currDigit++;
+  if(currDigit > 2) {
+    currDigit = 0;
   }
 }
 
 void displayNumber(uint8_t i, uint16_t number){
     uint8_t unit = number % 10; // Get unit digit
     uint8_t dec = (number / 10) % 10; // Get tens digit
-    uint8_t cent = (number / 100) % 10; // Get
+    uint8_t cent = (number / 100) % 10; // Get cents digit
 
     i == 0? writeDigit(unit,P1) : digitalWrite(P1,LOW);
     i == 1? writeDigit(dec,P2) : digitalWrite(P2,LOW);
@@ -95,6 +90,6 @@ void writeDigit(uint8_t digit,uint8_t display) {
   digitalWrite(D2, (digit >> 2) & 0x01);
   digitalWrite(D3, (digit >> 3) & 0x01);
   digitalWrite(display, HIGH);
-  delay(TON);
+  delay(3);
   digitalWrite(display, LOW);
 }
