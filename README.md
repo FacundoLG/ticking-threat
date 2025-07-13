@@ -1,5 +1,4 @@
 # Ticking Threat ⏱
-A dramatic countdown timer that feels straight out of an action film.  
 This project uses a single BCD-to-7-segment decoder to multiplex multiple displays, paired with a buzzer that beeps every second, mimicking the suspenseful countdown of a movie bomb.
 
 ![Device image](images/tt_dev.jpeg)
@@ -11,7 +10,7 @@ The main goal of this project is to demonstrate how to control multiple 7-segmen
 
 - 3× Common-cathode 7-segment displays(**5161AS**)
 - 1× BCD to 7-segment decoder (**CD4511**)
-- 1× Buzzer (active or passive)
+- 1× Active Buzzer
 - 3x NPN transistors for digit control (**BC337**)
 - 1x Arduino Nano
 - 10x Resistors
