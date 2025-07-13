@@ -24,3 +24,7 @@ The main goal of this project is to demonstrate how to control multiple 7-segmen
 - Only one display is activated at a time via a transistor connected to its common cathode.
 - The microcontroller rapidly cycles through the digits, updating the segment data and enabling each digit in turn.
 - This time-multiplexing technique creates the appearance of a stable, simultaneous display.
+
+## 🎬 Demo
+
+Watch the video demo here: [YouTube – Ticking Threat](https://www.youtube.com/watch?v=INegOfn2tVk)
